@@ -13,7 +13,7 @@ struct ContentView: View {
     
     @State var jankenNum = 0
     @State var enemyNum = 0
-    @State var result = ""
+    @State var result = "手を選んでください"
     
     func jankenResult() {
         self.enemyNum = Int.random(in: 1..<4)
@@ -46,9 +46,9 @@ struct ContentView: View {
             Spacer()
             JankenImg(num: $jankenNum)
             HStack{
-                JankenButton(num: $jankenNum, jankenID: 1, color: Color.red)
-                JankenButton(num: $jankenNum, jankenID: 2, color: Color.yellow)
-                JankenButton(num: $jankenNum, jankenID: 3, color: Color.blue)
+                JankenButton(jankenNum: $jankenNum, enemyNum: $enemyNum, result: $result, jankenID: 1, color: Color.red)
+                JankenButton(jankenNum: $jankenNum, enemyNum: $enemyNum, result: $result, jankenID: 2, color: Color.yellow)
+                JankenButton(jankenNum: $jankenNum, enemyNum: $enemyNum, result: $result, jankenID: 3, color: Color.blue)
             }
             Button(action: {
                 jankenResult()
@@ -77,12 +77,18 @@ struct JankenImg: View {
 }
 
 struct JankenButton: View {
-    @Binding var num: Int
+
+    @Binding var jankenNum: Int
+    @Binding var enemyNum: Int
+    @Binding var result: String
     let jankenID: Int
     let color: Color
+
     var body: some View {
         Button(action: {
-            num = jankenID
+            jankenNum = jankenID
+            enemyNum = 0
+            result = ""
         }, label: {
             Text(janken[jankenID])
                 .foregroundColor(.white)
@@ -90,7 +96,6 @@ struct JankenButton: View {
                 .frame(width: 100, height: 100)
                 .background(color)
                 .cornerRadius(10)
-                
         })
     }
 }
