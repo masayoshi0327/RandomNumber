@@ -24,16 +24,10 @@ struct ContentView: View {
                     .font(.title)
                     .fontWeight(.bold)
             }
-            Image(janken[enemyNum])
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 120)
+            JankenImg(num: $enemyNum)
                 .scaleEffect(x: -1, y: -1)
             Spacer()
-            Image(janken[jankenNum])
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 120)
+            JankenImg(num: $jankenNum)
             HStack{
                 JankenButton(num: $jankenNum, jankenID: 1, color: Color.red)
                 JankenButton(num: $jankenNum, jankenID: 2, color: Color.yellow)
@@ -52,6 +46,16 @@ struct ContentView: View {
             .disabled(jankenNum == 0)
             .padding()
         }
+    }
+}
+
+struct JankenImg: View {
+    @Binding var num: Int
+    var body: some View {
+        Image(janken[num])
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 120)
     }
 }
 
