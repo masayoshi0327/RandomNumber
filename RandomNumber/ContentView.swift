@@ -10,8 +10,21 @@ import SwiftUI
 let janken = ["なし", "グー", "チョキ", "パー"]
 
 struct ContentView: View {
+    
     @State var jankenNum = 0
     @State var enemyNum = 0
+    @State var result = ""
+    
+    func jankenResult() {
+        self.enemyNum = Int.random(in: 1..<4)
+        if (jankenNum == 1 && enemyNum == 2) || (jankenNum == 2 && enemyNum == 3) || (jankenNum == 3 && enemyNum == 1) {
+            result = "かち！"
+        }else if jankenNum == enemyNum {
+            result = "あいこ"
+        }else{
+            result = "まけ..."
+        }
+    }
     
     var body: some View {
         VStack{
@@ -27,6 +40,10 @@ struct ContentView: View {
             JankenImg(num: $enemyNum)
                 .scaleEffect(x: -1, y: -1)
             Spacer()
+            Text(result)
+                .font(.title)
+                .fontWeight(.bold)
+            Spacer()
             JankenImg(num: $jankenNum)
             HStack{
                 JankenButton(num: $jankenNum, jankenID: 1, color: Color.red)
@@ -34,7 +51,7 @@ struct ContentView: View {
                 JankenButton(num: $jankenNum, jankenID: 3, color: Color.blue)
             }
             Button(action: {
-                enemyNum = Int.random(in: 1..<4)
+                jankenResult()
             }, label: {
                 Text("しょうぶ！")
                     .foregroundColor(.white)
@@ -55,7 +72,7 @@ struct JankenImg: View {
         Image(janken[num])
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 120)
+            .frame(width: 120, height: 120)
     }
 }
 
